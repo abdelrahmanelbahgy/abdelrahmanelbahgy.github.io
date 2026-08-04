@@ -1,0 +1,315 @@
+/* ============================================
+   ANIMATIONS.CSS — Keyframes & Motion Design
+   ============================================ */
+
+/* ── Core Keyframes ────────────────────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+
+@keyframes pulse-badge {
+  0%, 100% { box-shadow: none; }
+  50%       { box-shadow: 0 0 12px rgba(251,191,36,0.3); }
+}
+
+@keyframes hero-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50%       { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scanline {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(100vh); }
+}
+
+@keyframes glitch {
+  0%   { clip-path: inset(0 0 95% 0); transform: translate(-2px, 0); }
+  10%  { clip-path: inset(20% 0 60% 0); transform: translate(2px, 0); }
+  20%  { clip-path: inset(40% 0 40% 0); transform: translate(-2px, 0); }
+  30%  { clip-path: inset(60% 0 20% 0); transform: translate(2px, 0); }
+  40%  { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 0); }
+  50%  { clip-path: inset(0); transform: translate(0); opacity: 0; }
+  100% { clip-path: inset(0); transform: translate(0); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes matrix-fall {
+  from { transform: translateY(-100%); opacity: 1; }
+  to   { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes border-run {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,26,26,0.3); }
+  50%       { box-shadow: 0 0 30px rgba(255,26,26,0.7), 0 0 60px rgba(255,26,26,0.3); }
+}
+
+@keyframes number-count {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Glitch Text Effect ─────────────────────── */
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.glitch-text::before {
+  color: #ff0000;
+  animation: glitch 4s infinite;
+  animation-delay: 0.5s;
+  opacity: 0.4;
+}
+
+.glitch-text::after {
+  color: #00ffff;
+  animation: glitch 4s infinite;
+  animation-delay: 1s;
+  opacity: 0.2;
+}
+
+/* ── Matrix Rain Canvas ─────────────────────── */
+#matrix-canvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Shimmer Loading ────────────────────────── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,26,26,0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ── Floating Animation ─────────────────────── */
+.float-anim {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ── Glow Pulse on Elements ─────────────────── */
+.glow-pulse {
+  animation: glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* ── Scan Line Overlay ──────────────────────── */
+.scanline-overlay {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.05) 3px,
+    rgba(0, 0, 0, 0.05) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+  border-radius: inherit;
+}
+
+/* ── Red Gradient Line Anim ─────────────────── */
+.animated-border {
+  position: relative;
+  border-radius: var(--radius-lg);
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(255,26,26,0.8) 0%,
+    transparent 25%,
+    transparent 75%,
+    rgba(255,26,26,0.8) 100%
+  );
+  background-size: 200% 100%;
+  animation: border-run 3s linear infinite;
+  z-index: -1;
+}
+
+/* ── Radar Circle ───────────────────────────── */
+.radar-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,26,26,0.15);
+  animation: ping 2s cubic-bezier(0,0,0.2,1) infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* ── Stagger children ───────────────────────── */
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* ── Hero entrance ──────────────────────────── */
+.hero-animate-in {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.hero-animate-in.delay-1 { animation-delay: 0.1s; opacity: 0; }
+.hero-animate-in.delay-2 { animation-delay: 0.25s; opacity: 0; }
+.hero-animate-in.delay-3 { animation-delay: 0.4s; opacity: 0; }
+.hero-animate-in.delay-4 { animation-delay: 0.55s; opacity: 0; }
+.hero-animate-in.delay-5 { animation-delay: 0.7s; opacity: 0; }
+.hero-animate-in.delay-6 { animation-delay: 0.85s; opacity: 0; }
+
+/* ── Terminal cursor blink ──────────────────── */
+.terminal-cursor-blink {
+  display: inline-block;
+  background: var(--red);
+  width: 7px;
+  height: 14px;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 0.8s step-end infinite;
+}
+
+/* ── Page loading bar ───────────────────────── */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  background: #050505;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#page-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-logo {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.1em;
+}
+
+.loader-logo span {
+  color: var(--red);
+}
+
+.loader-bar-track {
+  width: 280px;
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+  border-radius: 1px;
+  width: 0%;
+  animation: loader-progress 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  box-shadow: 0 0 8px var(--red);
+}
+
+@keyframes loader-progress {
+  0%   { width: 0%; }
+  40%  { width: 45%; }
+  70%  { width: 72%; }
+  90%  { width: 90%; }
+  100% { width: 100%; }
+}
+
+.loader-status {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gray-600);
+  letter-spacing: 0.12em;
+}

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AbdelRahman Elbahgy — Junior Penetration Tester</title>
+<meta name="description" content="Portfolio of AbdelRahman Elbahgy — Junior Penetration Tester &amp; Cybersecurity Student. Certifications, projects and writeups in offensive security.">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===================== NOISE / GRID OVERLAY ===================== -->
+<div class="grid-overlay" aria-hidden="true"></div>
+<div class="scanline" aria-hidden="true"></div>
+
+<!-- ===================== NAVBAR ===================== -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo">
+      <span class="logo-bracket">[</span>AE<span class="logo-cursor">_</span><span class="logo-bracket">]</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" class="nav-link active" data-nav="home"><span class="nav-index">01</span>Home</a>
+      <a href="#certifications" class="nav-link" data-nav="certifications"><span class="nav-index">02</span>Certifications</a>
+      <a href="#projects" class="nav-link" data-nav="projects"><span class="nav-index">03</span>Projects</a>
+      <a href="#writeups" class="nav-link" data-nav="writeups"><span class="nav-index">04</span>Writeups</a>
+      <a href="#contact" class="nav-link" data-nav="contact"><span class="nav-index">05</span>Contact</a>
+    </nav>
+
+    <a class="nav-cta" href="assets/cv/AbdelRahman_Elbahgy_CV.pdf" download>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
+      Download CV
+    </a>
+
+    <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow">// whoami</p>
+      <h1 class="hero-name">AbdelRahman<br>Elbahgy</h1>
+      <p class="hero-subtitle">Junior Penetration Tester <span class="dot-sep">/</span> Cybersecurity Student</p>
+
+      <div class="hero-typing">
+        <span class="prompt-symbol">root@abdelrahman:~$</span>
+        <span id="typedText" class="typed-text"></span><span class="type-cursor">|</span>
+      </div>
+
+      <p class="hero-desc">
+        Cybersecurity student at the Faculty of Computer &amp; Data Science, Alexandria University —
+        breaking things on purpose to help build systems that don't break by accident.
+        Focused on network security, web application testing, and vulnerability assessment.
+      </p>
+
+      <div class="hero-actions">
+        <a href="assets/cv/AbdelRahman_Elbahgy_CV.pdf" download class="btn btn-primary">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
+          Download CV
+        </a>
+        <a href="#projects" class="btn btn-ghost">View Projects</a>
+      </div>
+
+      <div class="hero-meta">
+        <span>📍 Alexandria, Egypt</span>
+        <span>🎓 GPA 3.7</span>
+        <span>🗣 Arabic (Native) · English (Fluent)</span>
+      </div>
+    </div>
+
+    <div class="hero-terminal" aria-hidden="true">
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <span class="terminal-title">session — /bin/zsh</span>
+        </div>
+        <div class="terminal-body">
+          <p><span class="tl-prompt">$</span> nmap -sV -sC target.thm</p>
+          <p class="tl-out">Starting Nmap scan...</p>
+          <p class="tl-out">22/tcp&nbsp;&nbsp;open&nbsp;&nbsp;ssh</p>
+          <p class="tl-out">80/tcp&nbsp;&nbsp;open&nbsp;&nbsp;http</p>
+          <p class="tl-out tl-ok">443/tcp open&nbsp;&nbsp;https</p>
+          <p><span class="tl-prompt">$</span> gobuster dir -u target -w wordlist.txt</p>
+          <p class="tl-out">/admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Status: 403)</p>
+          <p class="tl-out">/uploads&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Status: 200)</p>
+          <p><span class="tl-prompt">$</span> <span class="tl-blink">▌</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#certifications" class="scroll-cue" aria-label="Scroll down">
+    <span></span>
+  </a>
+</section>
+
+<!-- ===================== ABOUT / SKILLS ===================== -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <p class="eyebrow">// profile.json</p>
+    <h2 class="section-title">About &amp; Skillset</h2>
+
+    <div class="about-grid">
+      <div class="about-block">
+        <h3>Summary</h3>
+        <p>Cybersecurity student at Alexandria University seeking to apply technical skills in penetration
+          testing, network security, and vulnerability assessment while gaining hands-on industry experience.
+          Comfortable moving between offensive testing and the defensive mitigations that follow it.</p>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="timeline-date">10/2023 — Present</span>
+            <h4>B.Sc. Computer Science</h4>
+            <p>Alexandria University, Faculty of Computer &amp; Data Science · GPA 3.7</p>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date">08/2025 — 09/2025</span>
+            <h4>Cyber Security Summer Training — ITI</h4>
+            <p>Mastered 5 core areas including CCNA networking fundamentals and ethical hacking techniques.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date">02/2025 — 04/2025</span>
+            <h4>Linux Fundamentals Workshop — HackerRank</h4>
+            <p>Core Linux commands, file systems, and system navigation.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date">10/2023 — 01/2024</span>
+            <h4>Java Programming Workshop — Safwa FCDS</h4>
+            <p>OOP fundamentals, building multiple Java-based applications.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3>Hard Skills</h3>
+        <div class="skill-tags">
+          <span>Network Security</span>
+          <span>Linux Fundamentals</span>
+          <span>Cryptography Concepts</span>
+          <span>Wireshark</span>
+          <span>Python / Bash Scripting</span>
+          <span>OWASP Top 10</span>
+          <span>Burp Suite</span>
+          <span>Metasploit</span>
+          <span>Nmap</span>
+        </div>
+
+        <h3 class="mt">Soft Skills</h3>
+        <div class="skill-tags skill-tags-alt">
+          <span>Active Listening</span>
+          <span>Leadership</span>
+          <span>Time Management</span>
+          <span>Problem-Solving</span>
+        </div>
+
+        <h3 class="mt">In Progress</h3>
+        <ul class="progress-list">
+          <li><span class="progress-dot"></span> eJPT Certification Prep — Udemy <em>(04/2026 — Present)</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CERTIFICATIONS ===================== -->
+<section class="certifications" id="certifications">
+  <div class="section-inner">
+    <p class="eyebrow">// ls ./certifications</p>
+    <h2 class="section-title">Certifications</h2>
+    <p class="section-sub">Verified training and coursework. Certificate images are added as they're issued.</p>
+
+    <div class="cert-grid">
+
+      <article class="cert-card">
+        <div class="cert-media">
+          <button type="button" class="cert-expand" aria-label="View full certificate: EF SET Certificate">
+            <img src="assets/certs/efset.jpg" alt="EF SET Certificate" loading="lazy"
+                 onerror="this.style.display='none'; this.nextElementSibling.classList.add('show'); this.closest('.cert-expand').classList.add('no-image')">
+            <div class="cert-fallback">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>
+              <span>Image pending</span>
+            </div>
+            <span class="cert-zoom-hint">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+              View full
+            </span>
+          </button>
+        </div>
+        <div class="cert-info">
+          <h3>EF SET Certificate</h3>
+          <p class="cert-issuer">EF Standard English Test</p>
+          <p class="cert-detail">English proficiency — C1 level</p>
+        </div>
+      </article>
+
+      <article class="cert-card">
+        <div class="cert-media">
+          <button type="button" class="cert-expand" aria-label="View full certificate: ITI Cybersecurity Training Certificate">
+            <img src="assets/certs/iti-cybersecurity.jpg" alt="ITI Cybersecurity Training Certificate" loading="lazy"
+                 onerror="this.style.display='none'; this.nextElementSibling.classList.add('show'); this.closest('.cert-expand').classList.add('no-image')">
+            <div class="cert-fallback">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>
+              <span>Image pending</span>
+            </div>
+            <span class="cert-zoom-hint">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+              View full
+            </span>
+          </button>
+        </div>
+        <div class="cert-info">
+          <h3>ITI Cybersecurity Training Certificate</h3>
+          <p class="cert-issuer">Information Technology Institute</p>
+          <p class="cert-detail">CCNA fundamentals &amp; ethical hacking techniques</p>
+        </div>
+      </article>
+
+      <article class="cert-card">
+        <div class="cert-media">
+          <button type="button" class="cert-expand" aria-label="View full certificate: Linux Fundamentals Certificate">
+            <img src="assets/certs/linux-fundamentals.jpg" alt="Linux Fundamentals Certificate" loading="lazy"
+                 onerror="this.style.display='none'; this.nextElementSibling.classList.add('show'); this.closest('.cert-expand').classList.add('no-image')">
+            <div class="cert-fallback">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>
+              <span>Image pending</span>
+            </div>
+            <span class="cert-zoom-hint">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+              View full
+            </span>
+          </button>
+        </div>
+        <div class="cert-info">
+          <h3>Linux Fundamentals Certificate</h3>
+          <p class="cert-issuer">HackerRank</p>
+          <p class="cert-detail">Commands, file systems &amp; system navigation</p>
+        </div>
+      </article>
+
+      <article class="cert-card">
+        <div class="cert-media">
+          <button type="button" class="cert-expand" aria-label="View full certificate: Cybersecurity for Beginners">
+            <img src="assets/certs/cybersecurity-beginners.jpg" alt="Cybersecurity for Beginners Certificate" loading="lazy"
+                 onerror="this.style.display='none'; this.nextElementSibling.classList.add('show'); this.closest('.cert-expand').classList.add('no-image')">
+            <div class="cert-fallback">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>
+              <span>Image pending</span>
+            </div>
+            <span class="cert-zoom-hint">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+              View full
+            </span>
+          </button>
+        </div>
+        <div class="cert-info">
+          <h3>Cybersecurity for Beginners</h3>
+          <p class="cert-issuer">MaharaTech</p>
+          <p class="cert-detail">Foundational cybersecurity concepts</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROJECTS ===================== -->
+<section class="projects" id="projects">
+  <div class="section-inner">
+    <p class="eyebrow">// cat ./projects/*.md</p>
+    <h2 class="section-title">Projects</h2>
+    <p class="section-sub">Click a project to expand full details.</p>
+
+    <div class="project-list" id="projectList">
+
+      <article class="project-card">
+        <button class="project-head" aria-expanded="false">
+          <div class="project-head-text">
+            <span class="project-date">05/2026</span>
+            <h3>Advanced Cybersecurity Exploitation Lab</h3>
+            <p class="project-tagline">Offensive Security &amp; Authentication Analysis</p>
+          </div>
+          <span class="project-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="project-body">
+          <div class="project-body-inner">
+            <p>Conducted practical cybersecurity testing across 6 attack vectors using 9 Linux-based
+              security tools, performing username generation, Active Directory discovery, password cracking,
+              session analysis, Hash Length Extension Attack, and TOTP authentication analysis.</p>
+            <div class="project-tags">
+              <span>Active Directory</span><span>Password Cracking</span><span>TOTP</span>
+              <span>Hash Length Extension</span><span>Session Analysis</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <button class="project-head" aria-expanded="false">
+          <div class="project-head-text">
+            <span class="project-date">04/2026</span>
+            <h3>Web Application Security Assessment &amp; Hardening</h3>
+            <p class="project-tagline">Penetration Testing &amp; Defensive Security Project</p>
+          </div>
+          <span class="project-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="project-body">
+          <div class="project-body-inner">
+            <p>Practiced penetration testing on a vulnerable web application, identifying and exploiting
+              6 vulnerabilities across 5 classes (SQLi, XSS, IDOR, CORS, Path Traversal), then deployed a
+              WAF and applied targeted mitigation techniques to fully remediate all findings.</p>
+            <div class="project-tags">
+              <span>SQLi</span><span>XSS</span><span>IDOR</span><span>CORS</span>
+              <span>Path Traversal</span><span>WAF</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <button class="project-head" aria-expanded="false">
+          <div class="project-head-text">
+            <span class="project-date">11/2025</span>
+            <h3>Multi-Site Company Network Design</h3>
+            <p class="project-tagline">Cisco Packet Tracer — Enterprise Network Simulation</p>
+          </div>
+          <span class="project-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="project-body">
+          <div class="project-body-inner">
+            <p>Developed a 2-site corporate network topology in Cisco Packet Tracer, configuring 9 VLANs,
+              4 routers, DHCP, DNS, STP, NAT, and ACLs with proper segmentation and security enforcement.</p>
+            <div class="project-tags">
+              <span>VLANs</span><span>DHCP</span><span>DNS</span><span>STP</span><span>NAT</span><span>ACLs</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <button class="project-head" aria-expanded="false">
+          <div class="project-head-text">
+            <span class="project-date">12/2024</span>
+            <h3>University Management System Database</h3>
+            <p class="project-tagline">MS SQL Server — Database Design Project</p>
+          </div>
+          <span class="project-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="project-body">
+          <div class="project-body-inner">
+            <p>Designed a university management system database in MS SQL Server, architecting a 6-table
+              relational schema with 20+ SQL queries for efficient data management, retrieval, and reporting.</p>
+            <div class="project-tags">
+              <span>MS SQL Server</span><span>Relational Design</span><span>Query Optimization</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WRITEUPS ===================== -->
+<section class="writeups" id="writeups">
+  <div class="section-inner">
+    <p class="eyebrow">// ls ./writeups</p>
+    <h2 class="section-title">Writeups</h2>
+
+    <div class="writeups-empty">
+      <div class="writeups-terminal">
+        <p><span class="tl-prompt">$</span> ls -la ./writeups</p>
+        <p class="tl-out">total 0</p>
+        <p class="tl-out">drwxr-xr-x&nbsp; 2 abdelrahman staff&nbsp; -&nbsp; empty</p>
+        <p><span class="tl-prompt">$</span> <span class="tl-blink">▌</span></p>
+      </div>
+      <h3>Nothing published yet</h3>
+      <p>CTF and box writeups will land here as they're finished — check back soon.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <p class="eyebrow">// connect --socials</p>
+    <h2 class="section-title">Get in touch</h2>
+    <p class="section-sub">Open to junior penetration testing roles, internships, and collaboration.</p>
+
+    <div class="social-grid">
+      <a href="https://www.facebook.com/abdelrahman.elbahge.7/" class="social-card" data-social="facebook" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.23 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22C18.34 21.23 22 17.08 22 12.06z"/></svg>
+        <span>Facebook</span>
+      </a>
+      <a href="https://www.linkedin.com/in/abdulrahmanelbahgy" class="social-card" data-social="linkedin" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8.25h4.5V23H.24V8.25zM8.13 8.25h4.31v2.02h.06c.6-1.13 2.07-2.33 4.27-2.33 4.57 0 5.41 3 5.41 6.9V23h-4.5v-6.34c0-1.51-.03-3.46-2.11-3.46-2.11 0-2.44 1.65-2.44 3.35V23h-4.5V8.25z"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a href="https://www.instagram.com/abdulrahman_elbahgy/" class="social-card" data-social="instagram" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1"/></svg>
+        <span>Instagram</span>
+      </a>
+      <a href="https://github.com/AbduLz3" class="social-card" data-social="github" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.7 5.4-5.27 5.69.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .31.2.66.79.55A10.52 10.52 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <a href="mailto:abdelrahman.elbahgyy@gmail.com" class="social-card" data-social="email">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
+        <span>Email</span>
+      </a>
+      <a href="https://discord.com/users/474242087693582337" class="social-card" data-social="discord" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M20.32 4.37a18.6 18.6 0 0 0-4.6-1.43 12.7 12.7 0 0 0-.57 1.17 17.2 17.2 0 0 0-5.1 0 12.4 12.4 0 0 0-.58-1.17 18.5 18.5 0 0 0-4.6 1.43C1.9 8.4 1.2 12.3 1.55 16.15a18.7 18.7 0 0 0 5.67 2.87c.46-.63.87-1.3 1.22-2a12 12 0 0 1-1.92-.93c.16-.12.32-.24.47-.37a13.3 13.3 0 0 0 11.3 0c.16.13.32.25.47.37-.6.36-1.25.68-1.93.93.35.7.76 1.37 1.22 2a18.6 18.6 0 0 0 5.67-2.87c.42-4.47-.72-8.33-3.4-11.78zM8.68 13.8c-1.14 0-2.07-1.05-2.07-2.35 0-1.29.9-2.35 2.07-2.35 1.18 0 2.1 1.07 2.08 2.35 0 1.3-.9 2.35-2.08 2.35zm6.65 0c-1.14 0-2.07-1.05-2.07-2.35 0-1.29.9-2.35 2.07-2.35 1.18 0 2.1 1.07 2.08 2.35 0 1.3-.9 2.35-2.08 2.35z"/></svg>
+        <span>Discord</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#home" class="logo"><span class="logo-bracket">[</span>AE<span class="logo-cursor">_</span><span class="logo-bracket">]</span></a>
+        <p>Junior Penetration Tester &amp; Cybersecurity Student, Alexandria, Egypt.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <a href="#home">Home</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#projects">Projects</a>
+        <a href="#writeups">Writeups</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="https://github.com/AbduLz3" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/abdulrahmanelbahgy" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:abdelrahman.elbahgyy@gmail.com">Email</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Status</h4>
+        <p class="status-line"><span class="status-dot"></span> Available for opportunities</p>
+        <a href="assets/cv/AbdelRahman_Elbahgy_CV.pdf" download class="footer-cv">Download CV ↓</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> AbdelRahman Elbahgy. All rights reserved.</p>
+      <p class="footer-tag">root@abdelrahman:~$ exit</p>
+    </div>
+  </div>
+
+  <button class="to-top" id="toTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg>
+  </button>
+</footer>
+
+<!-- ===================== CERT LIGHTBOX ===================== -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox-backdrop" data-lightbox-close></div>
+  <div class="lightbox-content" role="dialog" aria-modal="true" aria-labelledby="lightboxCaption">
+    <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <img src="" alt="" id="lightboxImg">
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
