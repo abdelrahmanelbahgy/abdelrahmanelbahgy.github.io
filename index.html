@@ -13,11 +13,9 @@
 </head>
 <body>
 
-<!-- ===================== NOISE / GRID OVERLAY ===================== -->
 <div class="grid-overlay" aria-hidden="true"></div>
 <div class="scanline" aria-hidden="true"></div>
 
-<!-- ===================== NAVBAR ===================== -->
 <header class="navbar" id="navbar">
   <div class="nav-inner">
     <a href="#home" class="logo">
@@ -32,7 +30,7 @@
       <a href="#contact" class="nav-link" data-nav="contact"><span class="nav-index">05</span>Contact</a>
     </nav>
 
-    <a class="nav-cta" href="assets/cv/AbdelRahman_Elbahgy_CV.pdf" download>
+    <a class="nav-cta" href="assets/cv/AbdelRahmanElbahgy.pdf" download>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
       Download CV
     </a>
@@ -43,7 +41,6 @@
   </div>
 </header>
 
-<!-- ===================== HERO ===================== -->
 <section class="hero" id="home">
   <div class="hero-inner">
     <div class="hero-text">
@@ -63,7 +60,7 @@
       </p>
 
       <div class="hero-actions">
-        <a href="assets/cv/AbdelRahman_Elbahgy_CV.pdf" download class="btn btn-primary">
+        <a href="assets/cv/AbdelRahmanElbahgy.pdf" download class="btn btn-primary">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
           Download CV
         </a>
@@ -103,7 +100,6 @@
   </a>
 </section>
 
-<!-- ===================== ABOUT / SKILLS ===================== -->
 <section class="about" id="about">
   <div class="section-inner">
     <p class="eyebrow">// profile.json</p>
@@ -123,9 +119,14 @@
             <p>Alexandria University, Faculty of Computer &amp; Data Science · GPA 3.7</p>
           </div>
           <div class="timeline-item">
+            <span class="timeline-date">07/2026 — 09/2026</span>
+            <h4>Bug Bounty &amp; Web App Pentesting Training — TechTrek</h4>
+            <p>120-hour hands-on program covering reconnaissance, auth &amp; access control, business logic flaws, XSS and path traversal.</p>
+          </div>
+          <div class="timeline-item">
             <span class="timeline-date">08/2025 — 09/2025</span>
             <h4>Cyber Security Summer Training — ITI</h4>
-            <p>Mastered 5 core areas including CCNA networking fundamentals and ethical hacking techniques.</p>
+            <p>90-hour program mastering 5 core areas including CCNA networking fundamentals and ethical hacking techniques.</p>
           </div>
           <div class="timeline-item">
             <span class="timeline-date">02/2025 — 04/2025</span>
@@ -164,6 +165,7 @@
 
         <h3 class="mt">In Progress</h3>
         <ul class="progress-list">
+          <li><span class="progress-dot"></span> Vulnerability Analyst &amp; Pentester Track — DEPI <em>(08/2026 — Present)</em></li>
           <li><span class="progress-dot"></span> eJPT Certification Prep — Udemy <em>(04/2026 — Present)</em></li>
         </ul>
       </div>
@@ -171,7 +173,6 @@
   </div>
 </section>
 
-<!-- ===================== CERTIFICATIONS ===================== -->
 <section class="certifications" id="certifications">
   <div class="section-inner">
     <p class="eyebrow">// ls ./certifications</p>
@@ -218,9 +219,31 @@
           </button>
         </div>
         <div class="cert-info">
-          <h3>ITI Cybersecurity Training Certificate</h3>
-          <p class="cert-issuer">Information Technology Institute</p>
-          <p class="cert-detail">CCNA fundamentals &amp; ethical hacking techniques</p>
+          <h3>Cybersecurity Training Certificate</h3>
+          <p class="cert-issuer">Information Technology Institute (ITI)</p>
+          <p class="cert-detail">90-hour intensive cybersecurity training program</p>
+        </div>
+      </article>
+
+      <article class="cert-card">
+        <div class="cert-media">
+          <button type="button" class="cert-expand" aria-label="View full certificate: Bug Bounty &amp; Penetration Testing Certificate">
+            <img src="assets/certs/TechTrekBugCertificate.jpg" alt="Bug Bounty &amp; Penetration Testing Certificate" loading="lazy"
+                 onerror="this.style.display='none'; this.nextElementSibling.classList.add('show'); this.closest('.cert-expand').classList.add('no-image')">
+            <div class="cert-fallback">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="5"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg>
+              <span>Image pending</span>
+            </div>
+            <span class="cert-zoom-hint">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>
+              View full
+            </span>
+          </button>
+        </div>
+        <div class="cert-info">
+          <h3>Bug Bounty &amp; Penetration Testing Certificate</h3>
+          <p class="cert-issuer">TechTrek</p>
+          <p class="cert-detail">120-hour web application security training</p>
         </div>
       </article>
 
@@ -272,7 +295,6 @@
   </div>
 </section>
 
-<!-- ===================== PROJECTS ===================== -->
 <section class="projects" id="projects">
   <div class="section-inner">
     <p class="eyebrow">// cat ./projects/*.md</p>
@@ -280,6 +302,50 @@
     <p class="section-sub">Click a project to expand full details.</p>
 
     <div class="project-list" id="projectList">
+
+      <article class="project-card">
+        <button class="project-head" aria-expanded="false">
+          <div class="project-head-text">
+            <span class="project-date">09/2026</span>
+            <h3>Leantime Web Application Penetration Test</h3>
+            <p class="project-tagline">Web Application Security Assessment</p>
+          </div>
+          <span class="project-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="project-body">
+          <div class="project-body-inner">
+            <p>Conducted a penetration test on the Leantime open-source web application, performing
+              reconnaissance, enumeration, vulnerability assessment, and exploitation to identify and
+              document security weaknesses.</p>
+            <div class="project-tags">
+              <span>Reconnaissance</span><span>Enumeration</span><span>Vulnerability Assessment</span>
+              <span>Exploitation</span><span>Open Source</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <button class="project-head" aria-expanded="false">
+          <div class="project-head-text">
+            <span class="project-date">08/2026</span>
+            <h3>Vulnerable Web Application &amp; Security Hardening</h3>
+            <p class="project-tagline">Web Application Penetration Testing &amp; Remediation</p>
+          </div>
+          <span class="project-toggle" aria-hidden="true">+</span>
+        </button>
+        <div class="project-body">
+          <div class="project-body-inner">
+            <p>Developed a deliberately vulnerable web application, performed penetration testing to
+              identify security vulnerabilities, then implemented security patches and validated the
+              fixes through a follow-up security assessment.</p>
+            <div class="project-tags">
+              <span>Vulnerable App Design</span><span>Penetration Testing</span><span>Patching</span>
+              <span>Regression Testing</span>
+            </div>
+          </div>
+        </div>
+      </article>
 
       <article class="project-card">
         <button class="project-head" aria-expanded="false">
@@ -345,31 +411,10 @@
         </div>
       </article>
 
-      <article class="project-card">
-        <button class="project-head" aria-expanded="false">
-          <div class="project-head-text">
-            <span class="project-date">12/2024</span>
-            <h3>University Management System Database</h3>
-            <p class="project-tagline">MS SQL Server — Database Design Project</p>
-          </div>
-          <span class="project-toggle" aria-hidden="true">+</span>
-        </button>
-        <div class="project-body">
-          <div class="project-body-inner">
-            <p>Designed a university management system database in MS SQL Server, architecting a 6-table
-              relational schema with 20+ SQL queries for efficient data management, retrieval, and reporting.</p>
-            <div class="project-tags">
-              <span>MS SQL Server</span><span>Relational Design</span><span>Query Optimization</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
     </div>
   </div>
 </section>
 
-<!-- ===================== WRITEUPS ===================== -->
 <section class="writeups" id="writeups">
   <div class="section-inner">
     <p class="eyebrow">// ls ./writeups</p>
@@ -388,7 +433,6 @@
   </div>
 </section>
 
-<!-- ===================== CONTACT ===================== -->
 <section class="contact" id="contact">
   <div class="section-inner">
     <p class="eyebrow">// connect --socials</p>
@@ -396,25 +440,25 @@
     <p class="section-sub">Open to junior penetration testing roles, internships, and collaboration.</p>
 
     <div class="social-grid">
-      <a href="https://www.facebook.com/abdelrahman.elbahge.7/" class="social-card" data-social="facebook" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.23 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22C18.34 21.23 22 17.08 22 12.06z"/></svg>
-        <span>Facebook</span>
+      <a href="mailto:abdelrahman.elbahgyy@gmail.com" class="social-card" data-social="email">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
+        <span>Email</span>
       </a>
       <a href="https://www.linkedin.com/in/abdulrahmanelbahgy" class="social-card" data-social="linkedin" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8.25h4.5V23H.24V8.25zM8.13 8.25h4.31v2.02h.06c.6-1.13 2.07-2.33 4.27-2.33 4.57 0 5.41 3 5.41 6.9V23h-4.5v-6.34c0-1.51-.03-3.46-2.11-3.46-2.11 0-2.44 1.65-2.44 3.35V23h-4.5V8.25z"/></svg>
         <span>LinkedIn</span>
       </a>
-      <a href="https://www.instagram.com/abdulrahman_elbahgy/" class="social-card" data-social="instagram" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1"/></svg>
-        <span>Instagram</span>
-      </a>
-      <a href="https://github.com/AbduLz3" class="social-card" data-social="github" target="_blank" rel="noopener">
+      <a href="https://github.com/abdelrahmanelbahgy" class="social-card" data-social="github" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.43-2.7 5.4-5.27 5.69.42.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .31.2.66.79.55A10.52 10.52 0 0 0 23.5 12c0-6.27-5.23-11.5-11.5-11.5z"/></svg>
         <span>GitHub</span>
       </a>
-      <a href="mailto:abdelrahman.elbahgyy@gmail.com" class="social-card" data-social="email">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
-        <span>Email</span>
+      <a href="https://www.facebook.com/abdelrahman.elbahge.7/" class="social-card" data-social="facebook" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.23 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22C18.34 21.23 22 17.08 22 12.06z"/></svg>
+        <span>Facebook</span>
+      </a>
+      <a href="https://www.instagram.com/abdulrahman_elbahgy/" class="social-card" data-social="instagram" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1"/></svg>
+        <span>Instagram</span>
       </a>
       <a href="https://discord.com/users/474242087693582337" class="social-card" data-social="discord" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M20.32 4.37a18.6 18.6 0 0 0-4.6-1.43 12.7 12.7 0 0 0-.57 1.17 17.2 17.2 0 0 0-5.1 0 12.4 12.4 0 0 0-.58-1.17 18.5 18.5 0 0 0-4.6 1.43C1.9 8.4 1.2 12.3 1.55 16.15a18.7 18.7 0 0 0 5.67 2.87c.46-.63.87-1.3 1.22-2a12 12 0 0 1-1.92-.93c.16-.12.32-.24.47-.37a13.3 13.3 0 0 0 11.3 0c.16.13.32.25.47.37-.6.36-1.25.68-1.93.93.35.7.76 1.37 1.22 2a18.6 18.6 0 0 0 5.67-2.87c.42-4.47-.72-8.33-3.4-11.78zM8.68 13.8c-1.14 0-2.07-1.05-2.07-2.35 0-1.29.9-2.35 2.07-2.35 1.18 0 2.1 1.07 2.08 2.35 0 1.3-.9 2.35-2.08 2.35zm6.65 0c-1.14 0-2.07-1.05-2.07-2.35 0-1.29.9-2.35 2.07-2.35 1.18 0 2.1 1.07 2.08 2.35 0 1.3-.9 2.35-2.08 2.35z"/></svg>
@@ -424,7 +468,6 @@
   </div>
 </section>
 
-<!-- ===================== FOOTER ===================== -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-top">
@@ -444,7 +487,7 @@
 
       <div class="footer-col">
         <h4>Connect</h4>
-        <a href="https://github.com/AbduLz3" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/abdelrahmanelbahgy" target="_blank" rel="noopener">GitHub</a>
         <a href="https://www.linkedin.com/in/abdulrahmanelbahgy" target="_blank" rel="noopener">LinkedIn</a>
         <a href="mailto:abdelrahman.elbahgyy@gmail.com">Email</a>
       </div>
@@ -452,7 +495,7 @@
       <div class="footer-col">
         <h4>Status</h4>
         <p class="status-line"><span class="status-dot"></span> Available for opportunities</p>
-        <a href="assets/cv/AbdelRahman_Elbahgy_CV.pdf" download class="footer-cv">Download CV ↓</a>
+        <a href="assets/cv/AbdelRahmanElbahgy.pdf" download class="footer-cv">Download CV ↓</a>
       </div>
     </div>
 
@@ -467,7 +510,6 @@
   </button>
 </footer>
 
-<!-- ===================== CERT LIGHTBOX ===================== -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
   <div class="lightbox-backdrop" data-lightbox-close></div>
   <div class="lightbox-content" role="dialog" aria-modal="true" aria-labelledby="lightboxCaption">
