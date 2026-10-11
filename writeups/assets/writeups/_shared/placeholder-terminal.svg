@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540">
+  <rect width="900" height="540" fill="#0a0a0a"/>
+  <rect x="0" y="0" width="900" height="46" fill="#111111"/>
+  <circle cx="28" cy="23" r="7" fill="#ff1a1a"/>
+  <circle cx="52" cy="23" r="7" fill="#222222"/>
+  <circle cx="76" cy="23" r="7" fill="#222222"/>
+  <text x="450" y="29" fill="#5c5c5c" font-family="monospace" font-size="13" text-anchor="middle">terminal — screenshot placeholder</text>
+  <g font-family="monospace" font-size="16" fill="#9a9a9a">
+    <text x="30" y="100" fill="#ff1a1a">$ nmap -sC -sV -p- 10.10.11.10</text>
+    <text x="30" y="130">PORT    STATE SERVICE</text>
+    <text x="30" y="155">22/tcp  open  ssh</text>
+    <text x="30" y="180">80/tcp  open  http</text>
+    <text x="30" y="205" fill="#ff1a1a">443/tcp open  https</text>
+    <text x="30" y="250">$ gobuster dir -u http://target -w wordlist.txt</text>
+    <text x="30" y="275">/admin      (Status: 403)</text>
+    <text x="30" y="300">/uploads    (Status: 200)</text>
+    <text x="30" y="345" fill="#5c5c5c">— replace this file with your real screenshot —</text>
+  </g>
+</svg>

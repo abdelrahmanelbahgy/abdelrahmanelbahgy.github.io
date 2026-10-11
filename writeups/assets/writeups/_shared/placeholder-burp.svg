@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540">
+  <rect width="900" height="540" fill="#0a0a0a"/>
+  <rect x="0" y="0" width="900" height="46" fill="#111111"/>
+  <circle cx="28" cy="23" r="7" fill="#ff1a1a"/>
+  <circle cx="52" cy="23" r="7" fill="#222222"/>
+  <circle cx="76" cy="23" r="7" fill="#222222"/>
+  <text x="450" y="29" fill="#5c5c5c" font-family="monospace" font-size="13" text-anchor="middle">HTTP request — screenshot placeholder</text>
+  <g font-family="monospace" font-size="15" fill="#9a9a9a">
+    <text x="30" y="95" fill="#ff1a1a">POST /api/v1/account/update HTTP/1.1</text>
+    <text x="30" y="120">Host: target.htb</text>
+    <text x="30" y="145">Content-Type: application/json</text>
+    <text x="30" y="170">Cookie: session=eyJhbGciOi...</text>
+    <text x="30" y="210">{</text>
+    <text x="55" y="235">"user_id": 1042,</text>
+    <text x="55" y="260" fill="#ff1a1a">"role": "admin"</text>
+    <text x="30" y="285">}</text>
+    <text x="30" y="345" fill="#5c5c5c">— replace this file with your real screenshot —</text>
+  </g>
+</svg>
