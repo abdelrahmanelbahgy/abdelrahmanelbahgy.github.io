@@ -4,6 +4,18 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ============================================================
+     CROSS-SITE LINK (GHOSTIVOO Writeups)
+  ============================================================ */
+  if (typeof SITE_CONFIG !== 'undefined') {
+    const navWriteupsLink = document.getElementById('navWriteupsLink');
+    const footerWriteupsLink = document.getElementById('footerWriteupsLink');
+    const writeupsTeaserLink = document.getElementById('writeupsTeaserLink');
+    if (navWriteupsLink) navWriteupsLink.href = SITE_CONFIG.WRITEUPS_URL;
+    if (footerWriteupsLink) footerWriteupsLink.href = SITE_CONFIG.WRITEUPS_URL;
+    if (writeupsTeaserLink) writeupsTeaserLink.href = SITE_CONFIG.WRITEUPS_URL;
+  }
+
+  /* ============================================================
      FOOTER YEAR
   ============================================================ */
   const yearEl = document.getElementById('year');
@@ -191,7 +203,7 @@
      SCROLL REVEAL
   ============================================================ */
   const revealTargets = document.querySelectorAll(
-    '.timeline-item, .cert-card, .project-card, .social-card, .about-block, .writeups-empty'
+    '.timeline-item, .cert-card, .project-card, .social-card, .about-block, .writeups-teaser'
   );
   revealTargets.forEach(el => el.classList.add('reveal'));
 
