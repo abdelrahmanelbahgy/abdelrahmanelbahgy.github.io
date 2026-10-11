@@ -1,11 +1,5 @@
-/* ============================================
-   MAIN.JS — Core Logic, Interactions, Data
-   AbdelRahman Elbahgy | Cybersecurity Portfolio
-   ============================================ */
-
 'use strict';
 
-/* ── Page Loader ───────────────────────────── */
 window.addEventListener('load', () => {
   const loader = document.getElementById('page-loader');
   if (!loader) return;
@@ -18,7 +12,6 @@ window.addEventListener('load', () => {
   }, 1900);
 });
 
-/* ── Scroll Progress Bar ───────────────────── */
 const progressBar = document.getElementById('scroll-progress');
 window.addEventListener('scroll', () => {
   const total = document.documentElement.scrollHeight - window.innerHeight;
@@ -26,24 +19,20 @@ window.addEventListener('scroll', () => {
   if (progressBar) progressBar.style.width = pct + '%';
 });
 
-/* ── Navbar: Scroll & Active Link ──────────── */
 const navbar = document.getElementById('navbar');
 const navLinks = document.querySelectorAll('.nav-links a');
 const sections = document.querySelectorAll('section[id]');
 
 function onScroll() {
-  /* sticky */
   if (navbar) {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   }
 
-  /* back to top */
   const btt = document.getElementById('back-to-top');
   if (btt) {
     btt.classList.toggle('visible', window.scrollY > 400);
   }
 
-  /* active nav link */
   let current = '';
   sections.forEach(sec => {
     const top = sec.offsetTop - 100;
@@ -63,7 +52,6 @@ function onScroll() {
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-/* ── Back to Top ───────────────────────────── */
 const bttBtn = document.getElementById('back-to-top');
 if (bttBtn) {
   bttBtn.addEventListener('click', () => {
@@ -71,7 +59,6 @@ if (bttBtn) {
   });
 }
 
-/* ── Mobile Nav ────────────────────────────── */
 const hamburger = document.getElementById('nav-hamburger');
 const mobileOverlay = document.getElementById('mobile-overlay');
 
@@ -91,7 +78,6 @@ if (hamburger && mobileOverlay) {
   });
 }
 
-/* ── Custom Cursor ─────────────────────────── */
 const cursorDot  = document.getElementById('cursor-dot');
 const cursorRing = document.getElementById('cursor-ring');
 
@@ -121,7 +107,6 @@ if (cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches) {
   });
 }
 
-/* ── Scroll Reveal ─────────────────────────── */
 function initReveal() {
   const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
   if (!revealEls.length) return;
@@ -137,7 +122,6 @@ function initReveal() {
   revealEls.forEach(el => observer.observe(el));
 }
 
-/* ── Skill Bars ────────────────────────────── */
 function initSkillBars() {
   const bars = document.querySelectorAll('.skill-bar-fill');
   if (!bars.length) return;
@@ -155,7 +139,6 @@ function initSkillBars() {
   bars.forEach(bar => observer.observe(bar));
 }
 
-/* ── Count Up Animation ────────────────────── */
 function initCountUp() {
   const counters = document.querySelectorAll('[data-count]');
   if (!counters.length) return;
@@ -188,7 +171,6 @@ function initCountUp() {
   counters.forEach(c => observer.observe(c));
 }
 
-/* ── Timeline Expand ───────────────────────── */
 document.querySelectorAll('.timeline-item').forEach(item => {
   const dot  = item.querySelector('.timeline-dot');
   const card = item.querySelector('.timeline-card');
@@ -203,11 +185,9 @@ document.querySelectorAll('.timeline-item').forEach(item => {
   if (card) card.addEventListener('click', toggle);
 });
 
-// Open first timeline item by default
 const firstTL = document.querySelector('.timeline-item');
 if (firstTL) firstTL.classList.add('active');
 
-/* ── Contact Form ──────────────────────────── */
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
   contactForm.addEventListener('submit', e => {
@@ -219,7 +199,6 @@ if (contactForm) {
     btn.textContent = 'Sending...';
     btn.disabled    = true;
 
-    // Simulate form submission
     setTimeout(() => {
       btn.textContent = '✓ Message Sent';
       btn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
@@ -238,7 +217,6 @@ if (contactForm) {
   });
 }
 
-/* ── Matrix Rain Canvas ─────────────────────── */
 function initMatrix() {
   const canvas = document.getElementById('matrix-canvas');
   if (!canvas) return;
@@ -278,7 +256,6 @@ function initMatrix() {
 
 initMatrix();
 
-/* ── Smooth Anchor Scroll ──────────────────── */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', e => {
     const target = document.querySelector(anchor.getAttribute('href'));
@@ -291,7 +268,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-/* ── Project Modal / Details ───────────────── */
 const projectData = {
   1: {
     title: 'Advanced Cybersecurity Exploitation Lab',
@@ -376,7 +352,6 @@ function closeModal() {
   }
 }
 
-// Expose globally
 window.openModal  = openModal;
 window.closeModal = closeModal;
 
