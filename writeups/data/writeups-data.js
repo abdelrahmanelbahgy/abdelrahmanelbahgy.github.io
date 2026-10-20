@@ -393,8 +393,188 @@ cdn-assets.example-corp.com        [200]</code></pre>
         html: `<ul class="tools-list"><li>Subfinder</li><li>httpx</li><li>dig</li></ul>`
       }
     ]
+  },
+  {
+    slug: "htb-cap",
+    title: "HTB — Cap",
+    platform: "Hack The Box",
+    platformShort: "HTB",
+    os: "Linux",
+    difficulty: "Easy",
+    categories: ["Network", "Enumeration", "Privilege Escalation"],
+    tags: ["Linux", "PCAP", "CredentialReuse", "LinuxCapabilities"],
+    date: "2026-10-20",
+    dateDisplay: "20 October 2026",
+    cover: "assets/writeups/htb-cap/cover.png",
+    excerpt: "Leaked FTP credentials pulled from a web app's own packet capture feature, reused over SSH, then a cap_setuid Python binary for root.",
+    sample: false,
+    sections: [
+      {
+        id: "overview",
+        title: "Overview",
+        html: `<p>Cap is an easy-rated Linux box on Hack The Box that pairs two skills that show up
+          constantly in real assessments: reading network captures for leaked credentials, and
+          spotting a Linux capability that turns a normal binary into a root shell. The box is
+          built around a web app that lets you trigger and download packet captures of its own
+          traffic — and the whole chain comes down to one simple fact: if an application lets
+          you capture and replay its own network activity, you have to assume every login it
+          performs during that capture is now visible to you too.</p>
+          <p>The path here is short: enumerate the web app, pull the capture file it exposes, pick
+          the credentials out of it in Wireshark, reuse them over SSH, then escalate using a
+          Python binary that was handed a capability it never should have had. Below is the full
+          walkthrough, with the official task questions answered along the way.</p>`
+      },
+      {
+        id: "enumeration",
+        title: "Enumeration",
+        html: `<p>A full Nmap scan against the target kicked things off:</p>
+          <pre class="code-block" data-lang="bash"><code>sudo nmap -Pn -sV -sC -T5 10.129.139.190</code></pre>
+          <img src="assets/writeups/htb-cap/shot-01-nmap.png" alt="Nmap scan output" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <p>The scan came back with three open ports:</p>
+          <ul>
+            <li><code>21/tcp</code> — FTP (vsftpd 3.0.3)</li>
+            <li><code>22/tcp</code> — SSH (OpenSSH 8.2p1, Ubuntu)</li>
+            <li><code>80/tcp</code> — HTTP (Gunicorn, page titled "Security Dashboard")</li>
+          </ul>
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Task — How many TCP ports are open?</strong></p>
+            <p class="wp-task-a">Answer: <code>3</code></p>
+          </div>
+          <p>With port 80 open and FTP sitting there unauthenticated-looking, the web app was the
+          obvious place to start. Browsing to the site landed on a "Security Dashboard" — the
+          kind of internal tool that lets an admin trigger a live capture of the box's own
+          traffic and then download it for review. That's a dangerous feature to expose, because
+          anything that happens on the wire while a capture is running gets handed back to
+          whoever clicks the button.</p>
+          <img src="assets/writeups/htb-cap/shot-02-dashboard.png" alt="Security Dashboard web app" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <p>Triggering a capture from the dashboard (the "Security Snapshot" action) redirected
+          the browser to a URL in the form <code>/data/&lt;id&gt;</code>, and from there the raw
+          file was downloadable directly:</p>
+          <pre class="code-block" data-lang="text"><code>http://10.129.139.190/data/0</code></pre>
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Task — After running a Security Snapshot, the browser is redirected to a path of the format /[something]/[id]. What is the [something]?</strong></p>
+            <p class="wp-task-a">Answer: <code>data</code></p>
+          </div>
+          <p>FFUF confirmed there was nothing else interesting hanging off the application:</p>
+          <pre class="code-block" data-lang="bash"><code>ffuf -u http://10.129.139.190 -w /usr/share/wordlists/dirb/common.txt</code></pre>
+          <img src="assets/writeups/htb-cap/shot-03-ffuf.png" alt="ffuf directory enumeration" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <p>The capture IDs turned out to be sequential and not scoped to the requesting user, so
+          IDs other than the one just generated were just as reachable — including ID 0, the very
+          first capture ever taken on the box.</p>
+          <img src="assets/writeups/htb-cap/shot-04-pcapfile.png" alt="pcap file information disclosure" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Task — Are you able to get to other users' scans?</strong></p>
+            <p class="wp-task-a">Answer: <code>Yes</code></p>
+          </div>
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Task — What is the ID of the PCAP file that contains sensitive data?</strong></p>
+            <p class="wp-task-a">Answer: <code>0</code></p>
+          </div>`
+      },
+      {
+        id: "initial-access",
+        title: "Initial Access",
+        html: `<p>Capture 0 opened in Wireshark gave up the problem quickly: an FTP session in the
+          capture carried a full authentication exchange in clear text, because FTP sends
+          usernames and passwords unencrypted by design.</p>
+          <img src="assets/writeups/htb-cap/shot-05-wireshark.png" alt="Wireshark FTP credentials" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <p>Following the FTP stream surfaced the credentials directly:</p>
+          <pre class="code-block" data-lang="text"><code>Username: nathan
+Password: Buck3tH4tf0rm3!</code></pre>
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Task — Which application layer protocol in the pcap file can the sensitive data be found in?</strong></p>
+            <p class="wp-task-a">Answer: <code>FTP</code></p>
+          </div>
+          <p>Credential reuse across services is extremely common, so the next move was obvious —
+          try the same password over SSH:</p>
+          <pre class="code-block" data-lang="bash"><code>sshpass -p 'Buck3tH4tf0rm3!' ssh nathan@10.129.139.190</code></pre>
+          <img src="assets/writeups/htb-cap/shot-06-ssh.png" alt="SSH login as nathan" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <p>It worked — the FTP password was also nathan's SSH password, giving an authenticated
+          shell on the box.</p>
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Task — We've managed to collect nathan's FTP password. On what other service does this password work?</strong></p>
+            <p class="wp-task-a">Answer: <code>SSH</code></p>
+          </div>
+          <p>From nathan's home directory, the user flag:</p>
+          <pre class="code-block" data-lang="bash"><code>cat user.txt</code></pre>
+          <img src="assets/writeups/htb-cap/shot-07-userflag.png" alt="User flag" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Submit User Flag — Submit the flag located in the nathan user's home directory.</strong></p>
+            <p class="wp-task-a">Answer: <code>40b3ea35226af1e7308XXXXXXXXXXXX</code></p>
+          </div>`
+      },
+      {
+        id: "privilege-escalation",
+        title: "Privilege Escalation",
+        html: `<p>With a foothold as nathan, the next step was a path to root. Rather than guessing
+          at SUID binaries, checking Linux file capabilities made more sense — they can grant a
+          binary root-level powers without the SUID bit ever being set, and a lot of standard
+          privilege-escalation checklists skip over them.</p>
+          <pre class="code-block" data-lang="bash"><code>getcap -r / 2>/dev/null</code></pre>
+          <p>The output flagged <code>/usr/bin/python3.8</code>:</p>
+          <pre class="code-block code-output" data-lang="text"><code>/usr/bin/python3.8 = cap_setuid,cap_net_bind_service+eip</code></pre>
+          <img src="assets/writeups/htb-cap/shot-08-getcap.png" alt="getcap output" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Task — What is the full path to the binary on this machine that has special capabilities that can be abused to obtain root privileges?</strong></p>
+            <p class="wp-task-a">Answer: <code>/usr/bin/python3.8</code></p>
+          </div>
+          <p>The <code>cap_setuid</code> capability is the key piece here. Normally only root can
+          change a process's effective UID, but when a binary carries <code>cap_setuid+ep</code>,
+          any user who can execute it can call <code>setuid(0)</code> from inside it and become
+          root for that process — no sudo, no password, no exploit needed beyond running the
+          binary the right way. This is a textbook GTFOBins technique for Python.</p>
+          <p>Spawning a root shell directly:</p>
+          <pre class="code-block" data-lang="bash"><code>python3.8 -c 'import os; os.setuid(0); os.system("/bin/sh")'</code></pre>
+          <ul>
+            <li><code>os.setuid(0)</code> — changes the running process's UID to 0 (root)</li>
+            <li><code>os.system("/bin/sh")</code> — hands back a shell that inherits that UID</li>
+          </ul>
+          <p>The prompt confirmed it — full root access.</p>
+          <img src="assets/writeups/htb-cap/shot-09-rootshell.png" alt="Root shell" class="writeup-img" data-lightbox="gallery-htb-cap">`
+      },
+      {
+        id: "proof",
+        title: "Proof / Flags",
+        html: `<p><b>User flag</b> — retrieved from nathan's home directory after reusing the leaked
+          FTP password over SSH.</p>
+          <p><b>Root flag</b> — retrieved from <code>/root/root.txt</code> after escalating through
+          the <code>cap_setuid</code> capability on <code>/usr/bin/python3.8</code>.</p>
+          <img src="assets/writeups/htb-cap/shot-10-rootflag.png" alt="Root flag" class="writeup-img" data-lightbox="gallery-htb-cap">
+          <div class="wp-task">
+            <p class="wp-task-q"><strong>Submit Root Flag — Submit the flag located in root's home directory.</strong></p>
+            <p class="wp-task-a">Answer: <code>f43200140a11612dbXXXXXXXXXXXXXX</code></p>
+          </div>`
+      },
+      {
+        id: "lessons-learned",
+        title: "Lessons Learned",
+        html: `<ul>
+            <li><b>Never let an application expose raw packet captures of itself.</b> A "Security
+              Snapshot" feature that hands back a PCAP of live traffic is, by definition, a
+              credential-leak feature the moment any plaintext protocol touches the wire during
+              that window.</li>
+            <li><b>Broken access control on sequential IDs is its own finding.</b> The capture
+              endpoint didn't scope files to the requesting session, so every snapshot ever taken
+              — including other users' — was reachable just by changing a number in the URL.</li>
+            <li><b>Retire plaintext authentication protocols.</b> FTP sending credentials in the
+              clear is decades-old news, but it's still common enough to be the first thing worth
+              checking in any capture.</li>
+            <li><b>Audit password reuse across services as part of every engagement.</b> The same
+              password working for both FTP and SSH turned a single leaked credential into a full
+              shell.</li>
+            <li><b>Treat Linux capabilities with the same suspicion as SUID bits.</b>
+              <code>cap_setuid</code> on an interpreter like Python is just as dangerous as a SUID
+              shell — <code>getcap -r /</code> should be a standard step in every
+              privilege-escalation checklist, not an afterthought.</li>
+          </ul>`
+      },
+      {
+        id: "tools-used",
+        title: "Tools Used",
+        html: `<ul class="tools-list"><li>Nmap</li><li>ffuf</li><li>Wireshark</li><li>sshpass / ssh</li><li>getcap</li><li>GTFOBins (Python)</li></ul>`
+      }
+    ]
   }
-
 ];
 
 
