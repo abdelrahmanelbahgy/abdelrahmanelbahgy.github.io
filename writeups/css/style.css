@@ -242,6 +242,17 @@ code{ font-family: var(--mono); }
 .wp-section ul:not(.tools-list) li::before{ content: '→'; position: absolute; left: 0; color: var(--accent); }
 .wp-section code{ background: var(--bg-card); border: 1px solid var(--border-soft); padding: 2px 6px; border-radius: 3px; font-size: 13.5px; color: var(--accent); }
 
+/* task / official-question Q&A block, used by box writeups that track HTB/THM task answers */
+.wp-task{
+  background: var(--bg-card); border: 1px solid var(--border-soft);
+  border-left: 3px solid var(--accent-dim); border-radius: 6px;
+  padding: 14px 18px; margin: 0 0 16px;
+}
+.wp-task-q{ font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-faint); margin: 0 0 6px !important; }
+.wp-task-q strong{ color: var(--text-muted); font-weight: 600; }
+.wp-task-a{ font-family: var(--mono); font-size: 14.5px; color: var(--text) !important; margin: 0 !important; }
+.wp-task-a code{ color: var(--accent); }
+
 .tools-list{ flex-direction: row !important; flex-wrap: wrap; gap: 8px !important; }
 .tools-list li{ font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); border: 1px solid var(--border); padding: 7px 13px; border-radius: 20px; padding-left: 13px !important; }
 .tools-list li::before{ display: none; }
