@@ -1,3 +1,6 @@
+/* ============================================================
+   TOKENS — identical to the main portfolio for brand continuity
+============================================================ */
 :root{
   --bg: #050505;
   --bg-section: #111111;
@@ -47,11 +50,17 @@ code{ font-family: var(--mono); }
   mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 90%);
 }
 
+/* ============================================================
+   LAYOUT HELPERS
+============================================================ */
 .section-inner{ max-width: var(--max); margin: 0 auto; padding: 56px 32px 100px; position: relative; z-index: 2; }
 .eyebrow{ font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: .04em; margin: 0 0 14px; }
 .section-title{ font-family: var(--mono); font-weight: 700; font-size: clamp(26px, 4vw, 36px); margin: 0 0 12px; letter-spacing: -.01em; }
 .section-sub{ color: var(--text-muted); font-size: 16px; max-width: 620px; margin: 0 0 36px; }
 
+/* ============================================================
+   NAVBAR
+============================================================ */
 .navbar{
   position: sticky; top: 0; left: 0; right: 0; z-index: 100;
   height: var(--nav-h);
@@ -84,11 +93,17 @@ code{ font-family: var(--mono); }
 @keyframes blink{ 50%{ opacity: 0; } }
 @keyframes pulse{ 0%,100%{ opacity: 1; } 50%{ opacity: .35; } }
 
+/* ============================================================
+   HERO (compact, per spec)
+============================================================ */
 .hub-hero{ border-bottom: 1px solid var(--border-soft); position: relative; z-index: 2; }
 .hub-hero .section-inner{ padding: 64px 32px 48px; }
 .hub-hero h1{ font-family: var(--mono); font-weight: 800; font-size: clamp(30px, 4.5vw, 44px); margin: 0 0 14px; letter-spacing: -.01em; }
 .hub-hero p{ color: var(--text-muted); max-width: 680px; font-size: 16px; margin: 0; }
 
+/* ============================================================
+   CONTROLS — search / filters / sort
+============================================================ */
 .controls{ position: relative; z-index: 2; }
 .controls .section-inner{ padding-top: 44px; padding-bottom: 0; }
 
@@ -138,6 +153,9 @@ code{ font-family: var(--mono); }
 }
 .results-meta strong{ color: var(--accent); }
 
+/* ============================================================
+   WRITEUP CARD GRID
+============================================================ */
 .writeup-grid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
 
 .writeup-card{
@@ -191,6 +209,9 @@ code{ font-family: var(--mono); }
 }
 .empty-state strong{ display: block; color: var(--text); font-size: 17px; margin-bottom: 8px; font-family: var(--sans); font-weight: 600; }
 
+/* ============================================================
+   WRITEUP PAGE — header
+============================================================ */
 .wp-header{ border-bottom: 1px solid var(--border-soft); position: relative; z-index: 2; }
 .wp-header .section-inner{ padding: 48px 32px 36px; }
 
@@ -214,6 +235,9 @@ code{ font-family: var(--mono); }
 .wp-cover{ margin-top: 30px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 16/7; }
 .wp-cover img{ width: 100%; height: 100%; object-fit: cover; }
 
+/* ============================================================
+   WRITEUP PAGE — body + TOC
+============================================================ */
 .wp-layout{ display: grid; grid-template-columns: 220px 1fr; gap: 56px; align-items: start; position: relative; z-index: 2; }
 .wp-layout .section-inner{ display: contents; padding: 0; }
 
@@ -252,21 +276,22 @@ code{ font-family: var(--mono); }
 .wp-task-q strong{ color: var(--text-muted); font-weight: 600; }
 .wp-task-a{ font-family: var(--mono); font-size: 14.5px; color: var(--text) !important; margin: 0 !important; }
 .wp-task-a code{ color: var(--accent); }
-
 .tools-list{ flex-direction: row !important; flex-wrap: wrap; gap: 8px !important; }
 .tools-list li{ font-family: var(--mono); font-size: 12.5px; color: var(--text-muted); border: 1px solid var(--border); padding: 7px 13px; border-radius: 20px; padding-left: 13px !important; }
 .tools-list li::before{ display: none; }
 
+/* code blocks */
 .code-block{
   position: relative; background: var(--bg-card); border: 1px solid var(--border);
-  border-left: 3px solid var(--accent); border-radius: 6px; padding: 18px 50px 18px 18px;
+  border-left: 3px solid var(--accent); border-radius: 6px; padding: 18px;
   margin: 0 0 16px; overflow-x: auto; font-family: var(--mono); font-size: 13.5px; line-height: 1.65;
   color: var(--text);
 }
 .code-block.code-output{ border-left-color: var(--border); color: var(--text-faint); }
-.code-block code{ background: none; border: none; padding: 0; color: inherit; white-space: pre; }
+.code-block-inner{ position: relative; display: inline-block; min-width: 100%; box-sizing: border-box; padding-right: 48px; }
+.code-block code{ background: none; border: none; padding: 0; color: inherit; white-space: pre; display: block; }
 .code-copy{
-  position: absolute; top: 10px; right: 10px;
+  position: absolute; top: -4px; right: 0;
   background: rgba(255,255,255,.04); border: 1px solid var(--border); color: var(--text-muted);
   font-family: var(--mono); font-size: 11px; padding: 6px 10px; border-radius: var(--radius);
   display: flex; align-items: center; gap: 6px; transition: border-color .2s ease, color .2s ease, background .2s ease;
@@ -277,6 +302,7 @@ code{ font-family: var(--mono); }
 .writeup-img{ border-radius: 6px; border: 1px solid var(--border); margin: 6px 0 20px; cursor: zoom-in; transition: border-color .2s ease, opacity .2s ease; }
 .writeup-img:hover{ border-color: var(--accent-dim); opacity: .92; }
 
+/* prev / next nav */
 .wp-nav{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; padding-top: 36px; border-top: 1px solid var(--border-soft); }
 .wp-nav-link{
   background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px;
@@ -291,6 +317,9 @@ code{ font-family: var(--mono); }
 .wp-back-bottom{ display: block; text-align: center; margin: 36px 0 0; font-family: var(--mono); font-size: 13.5px; color: var(--text-muted); }
 .wp-back-bottom:hover{ color: var(--accent); }
 
+/* ============================================================
+   LIGHTBOX
+============================================================ */
 .lightbox{
   position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center;
   padding: 40px 20px; opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease;
@@ -313,6 +342,9 @@ code{ font-family: var(--mono); }
 .lightbox-arrow.next{ right: -58px; }
 .lightbox-arrow[hidden]{ display: none; }
 
+/* ============================================================
+   FOOTER
+============================================================ */
 .footer{ background: var(--bg-section); border-top: 1px solid var(--border-soft); position: relative; z-index: 2; }
 .footer-inner{ max-width: var(--max); margin: 0 auto; padding: 56px 32px 28px; }
 .footer-top{ display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border-soft); }
@@ -333,6 +365,9 @@ code{ font-family: var(--mono); }
 .to-top.show{ opacity: 1; visibility: visible; transform: translateY(0); }
 .to-top:hover{ border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
 
+/* ============================================================
+   RESPONSIVE
+============================================================ */
 @media (max-width: 980px){
   .wp-layout{ grid-template-columns: 1fr; }
   .wp-toc{ display: none; }
