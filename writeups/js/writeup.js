@@ -92,13 +92,18 @@
 
   /* ---------- code block copy buttons ---------- */
   document.querySelectorAll('.code-block').forEach(block => {
+    const codeEl = block.querySelector('code');
+    const inner = document.createElement('div');
+    inner.className = 'code-block-inner';
+    block.appendChild(inner);
+    inner.appendChild(codeEl); // moves the existing <code> into the new wrapper
+
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'code-copy';
     btn.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg><span>Copy</span>`;
     btn.addEventListener('click', () => {
-      const code = block.querySelector('code');
-      navigator.clipboard.writeText(code ? code.textContent : block.textContent).then(() => {
+      navigator.clipboard.writeText(codeEl.textContent).then(() => {
         btn.classList.add('copied');
         btn.querySelector('span').textContent = 'Copied';
         setTimeout(() => {
@@ -107,7 +112,7 @@
         }, 1600);
       });
     });
-    block.appendChild(btn);
+    inner.appendChild(btn);
   });
 
   /* ---------- TOC scroll-spy ---------- */
